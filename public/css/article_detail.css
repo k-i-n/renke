@@ -1,0 +1,19 @@
+.editor{
+    padding: 30px 20px 33px 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.editor .titlee{
+	height: 40px;
+	font-size: 18px;
+	color: #333333;
+}
+.editor .datetime{
+	height: 40px;
+	font-size: 14px;
+	color: #333333;
+}
+.wd120011{
+    min-height: 600px;width: 1200px;background: #fff;box-sizing: border-box;border: solid 1px #c8c8c8;margin: 0 auto;
+}

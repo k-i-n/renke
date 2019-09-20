@@ -1,0 +1,77 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+<input id="ajax" value="1" type="hidden">
+<div class="layui-tab td-tab-1">
+    <ul class="layui-tab-title">
+        <li class="layui-this" onclick="index();">系统设置</li>
+        <li onclick="email()">邮件设置</li>
+        <li onclick="qiniu()">七牛云</li>
+        <li onclick="wechat()">微信公众号设置</li>
+    </ul>
+</div>
+<div class="space-20"></div>
+<form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">系统名称：</label>
+        <div class="layui-input-block w19">
+            <input type="text" class="layui-input" id="system_name" name="system_name" check="required"
+                   info="请输入系统名称"
+                   value="{$system_data.system_name|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">网址：</label>
+        <div class="layui-input-block w19">
+            <input type="text" class="layui-input" id="system_url" name="system_url" check="required"
+                   info="请输入系统名称"
+                   value="{$system_data.system_url|default=''}">
+        </div>
+    </div>
+    <hr>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">保存</a>
+            <a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['element'], function () {
+        set_return_url(null);
+        var fn = {
+            index: function () {
+                window.open('{:url("SystemConfig/index")}', '_self');
+            },
+            email: function () {
+                window.open('{:url("SystemConfig/email")}', '_self');
+            },
+            qiniu: function () {
+                window.open('{:url("SystemConfig/qiniu")}', '_self');
+            },
+            wechat: function () {
+                window.open('{:url("SystemConfig/wechat")}', '_self');
+            },
+            save: function () {
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+    });
+</script>
+{/block}

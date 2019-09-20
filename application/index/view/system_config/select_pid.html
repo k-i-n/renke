@@ -1,0 +1,49 @@
+{extend name="layout/popup" /}
+
+{block name="content"}
+<input type="hidden" name="val" id="val">
+<input type="hidden" name="name" id="name">
+<h1 class="popup-title">选择上级部门</h1>
+<div style="padding:15px;height:calc(100vh - 155px);overflow-y: scroll">
+	<div class="tree-menu edit">
+		{:tree_menu($dept_tree)}
+	</div>
+</div>
+<div class="popup-bottom">
+	<a class="layui-btn" onclick="save();">确定</a>
+	<a class="layui-btn layui-btn-primary" onclick="popup_close();">取消</a>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+	layui.use(['jquery'], function() {
+		var $ = layui.jquery;
+		var fn = {
+			save : function() {
+				if ($("#name").val().length > 0) {
+					$("#pid_name", parent.document).val($("#name").val());
+					$("#pid", parent.document).val($("#val").val());
+				} else {
+					parent.layer.msg('"请选择"');
+					return false;
+				}
+				popup_close();
+			}
+		};
+		win_exp(fn);
+
+		parent_node = $("#id", parent.document).val();
+		$(".tree-menu a[node='" + parent_node + "']").addClass("disabled");
+		$(".tree-menu a[node='" + parent_node + "'] + input + label + ul a").addClass("disabled");
+		$(".tree-menu a:not('.disabled')").click(function() {
+			$this = $(this);
+			$("#val").val($this.attr("node"));
+			$("#name").val($this.text());
+			$(".tree-menu a.active").removeClass("active");
+			$this.addClass("active");
+		});
+
+	}); 
+</script>
+{/block}

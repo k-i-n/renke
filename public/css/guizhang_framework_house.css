@@ -1,0 +1,46 @@
+.search{
+    height: 291px;
+    width: 100%;
+    margin-top: 20px;
+}
+.tab_search{
+    height: 223px;
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tab_search .tishi{
+    padding-top: 19px;
+    margin-bottom: 13px;
+    text-align: center;
+}
+.tab_search .input{
+    width: 228px;
+	height: 24px;
+	background-color: #ffffff;
+    border: solid 1px #e6e6e6;
+    box-shadow: 1px 1px 10px #e6e6e6;
+}
+.tab_search .search_btn{
+    width: 60px;
+	height: 24px;
+	background-color: #0858a3;
+	border-radius: 12px;
+    border: solid 1px #dcdcdc;
+	font-size: 14px;
+    color: #ffffff;
+    margin-top: 5px;
+}
+.tab_search .search_btn:focus{
+    outline: 0px;
+}
+.tab_search .tishi_info{
+	font-size: 14px;
+	line-height: 18px;
+    color: #999999;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}

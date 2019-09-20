@@ -1,0 +1,63 @@
+{extend name="layout/popup" /}
+
+{block name="content"}
+<input type="hidden" name="ajax" id="ajax" value="1">
+<div class="popup-header">
+    <h1>编辑角色</h1>
+</div>
+<div class="popup-body">
+    <div class="p20">
+        <form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+            <input type="hidden" name="opmode" value="edit">
+            <input type="hidden" name="id" id="id" value="{$vo.id}">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">名称：</label>
+                <div class="layui-input-block w19">
+                    <div class="layui-form-mid">
+                        {$vo.name}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid">
+                        {$vo.remark}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="popup-footer">
+    <a class="layui-btn" onclick="popup_close();">关闭</a>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['element'], function () {
+        var fn = {
+            select_pid: function () {
+                winopen("{:url('select_pid')}", 560, 470);
+            },
+            save: function () {
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            popup_close();
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+    });
+</script>
+{/block}

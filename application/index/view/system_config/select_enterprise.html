@@ -1,0 +1,68 @@
+{extend name="layout/popup" /}
+
+{block name="content"}
+<input type="hidden" name="val" id="val">
+<input type="hidden" name="name" id="name">
+<h1 class="popup-title">选择企业</h1>
+<div style="position: absolute;right: 15px;top:11px;">
+	<div class="layui-input-block w19">
+		<form id="form_search" method="post" action="">
+			<input type="text" id="li_name" name="li_name" placeholder="根据名称搜索" class="layui-input" check="required" info="请选择请选择企业" >
+			<a class="add-on" onclick="search_enterprise();"><i class="fa fa-search"></i></a>
+		</form>
+	</div>
+</div>
+<div style="padding:15px;height:calc(100vh - 155px);overflow-y: scroll">
+	<div class="tree-menu edit">
+		{:tree_menu($tree)}
+	</div>
+</div>
+<div class="popup-bottom">
+	<a class="layui-btn" onclick="select_all();">全选</a>
+	<a class="layui-btn" onclick="save();">确定</a>
+	<a class="layui-btn layui-btn-primary" onclick="popup_close();">取消</a>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+	layui.use(['jquery'], function() {
+		var $ = layui.jquery;
+		var fn = {
+			select_all : function() {
+				$(".tree-menu a").addClass('active');
+			},
+			search_enterprise : function() {
+				$('#form_search').submit();
+			},
+			save : function() {
+				var html = '';
+				$('a.active').each(function() {
+					$this = $(this);
+					data_id = $this.attr('node');
+					data_name = $this.text();
+					tpl = '<span data-id="{id}" data-name="{name}">{name}<a class="del"><i class="fa fa-times" aria-hidden="true"></i></a></span>';
+					var vars = {};
+					vars.id = data_id;
+					vars.name = data_name;
+					html += tpl_parse(tpl, vars);
+				});
+
+				$('#scope_enterprise_warp', parent.document).html(html);
+				popup_close();
+			}
+		};
+		win_exp(fn);
+
+		$(".tree-menu a").click(function() {
+			$this = $(this);
+			if ($this.hasClass('active')) {
+				$this.removeClass("active");
+			} else {
+				$this.addClass("active");
+			}
+		});
+
+	}); 
+</script>
+{/block}

@@ -1,0 +1,174 @@
+{extend name="layout/detail" /}
+{block name="content"}
+<style>
+	.space1 {
+		display: inline-block;
+		width: 30px;
+	}
+	.space2 {
+		display: inline-block;
+		width: 60px;
+	}
+	.space3 {
+		display: inline-block;
+		width: 90px;
+	}
+
+	#user_list .active {
+	 
+	}
+	#user_list .active * {
+		 
+	}
+</style>
+<input type="hidden" name="ajax" id="ajax" value="1">
+<h1 class="main-title">功能权限分配</h1>
+<hr>
+<div class="layui-form"  style="border:1px solid #ccc;padding:10px;">
+	<a class="layui-btn" onclick="save();">保存</a>
+</div>
+<div class="layui-form">
+	<form id="form_data">
+		<div id="user_list" style="width:49%;float:left;">
+			<table class="layui-table" lay-skin="line" >
+				<colgroup>
+					<col width="50">
+					<col width="150">
+					<col width="150">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>
+						<input type="checkbox" lay-skin="primary" lay-filter="user">
+						</th>
+						<th>用户</th>
+					</tr>
+				</thead>
+				<tbody>
+					{volist name="user_list" id="vo"}
+					<tr data='{$vo.id}'>
+						<td>
+						<input type="checkbox" name="user_id[]" lay-skin="primary" value="{$vo.id}" class="user">
+						</td>
+						<td>{$vo.name}</td>
+					</tr>
+					{/volist}
+				</tbody>
+			</table>
+		</div>
+		<div class="role_list" style="width:49%;float:right;">
+			<table class="layui-table" lay-skin="line" >
+				<colgroup>
+					<col width="50">
+					<col width="250">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>
+						<input type="checkbox" lay-skin="primary" lay-filter="role">
+						</th>
+						<th>权限</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{volist name="role_list" id="vo"}
+					<tr>
+						<td>
+						<input type="checkbox" name="role_id[]" lay-skin="primary" value="{$vo.id}" class="role">
+						</td>
+						<td>{$vo.name}</td>
+					</tr>
+					{/volist}
+				</tbody>
+
+			</table>
+		</div>
+	</form>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+	layui.use(['form', 'element'], function() {
+		var $ = layui.jquery;
+		var form = layui.form;
+		var fn = {
+			save : function() {
+				if ($("input:checked[name='user_id[]']").length < 1) {
+					layer.msg("请选择用户");
+					return false;
+				};
+				if ($("input:checked[name='role_id[]']").length < 1) {
+					layer.msg("请选择权限");
+					return false;
+				};
+
+				send_form("form_data", "{:url('set_role')}", "{:url('user')}", function(ret) {
+					if (ret.code) {
+						layer.msg(ret.msg);
+					}
+				});
+			}
+		};
+		win_exp(fn);
+
+		set_return_url(null);
+
+		$("#user_list tbody tr").click(function() {
+			$("#user_list tr").removeClass("active");
+			$this = $(this);
+			$this.addClass("active");
+			$("#user_id").val($this.attr("data"));
+
+			if ($this.find(':checkbox').prop('checked')) {
+				$this.find(':checkbox').prop('checked', false);
+			} else {
+				$this.find(':checkbox').prop('checked', true);
+			}
+
+			form.render('checkbox');
+			var vars = 'user_id=' + $this.attr("data");
+			$.get("{:url('get_role_list')}", vars, function(data) {
+				show_data(data);
+			});
+			return false;
+		});
+
+		function show_data(result) {
+			$('.role:checkbox').prop('checked', false);
+			form.render('checkbox');
+			for (var s in result.data) {
+				$(".role:checkbox[value=" + result.data[s].role_id + "]").prop('checked', true);
+				if (result.data[s].admin == 1) {
+					$(".role:checkbox[value=" + result.data[s].role_id + "]").prop('checked', true);
+				}
+			};
+			form.render('checkbox');
+		};
+
+		form.on('select(test)', function(data) {
+			$('#form_search').submit();
+		});
+
+		form.on('checkbox(user)', function(data) {
+			if (data.elem.checked) {
+				$('.user:checkbox').prop('checked', true);
+			} else {
+				$('.user:checkbox').prop('checked', false);
+			}
+			form.render('checkbox');
+		});
+
+		form.on('checkbox(role)', function(data) {
+			if (data.elem.checked) {
+				$('.role:checkbox').prop('checked', true);
+			} else {
+				$('.role:checkbox').prop('checked', false);
+			}
+			form.render('checkbox');
+		});
+
+	}); 
+</script>
+{/block}

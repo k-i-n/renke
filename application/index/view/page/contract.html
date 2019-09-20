@@ -1,0 +1,96 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+内容
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['element', 'laypage'], function () {
+        set_return_url(null);
+        var fn = {
+            add: function () {
+                window.open('{:url("add")}', '_self');
+            },
+            adv_search: function () {
+                send_form('form_search');
+            },
+            del: function (id) {
+                layer.msg('确定要删除吗?', {
+                    time: 0,
+                    btn: ['确定', '取消'],
+                    yes: function (index) {
+                        var vars = 'id=' + id;
+                        send_ajax("{:url('del')}", vars, function (ret) {
+                            if (ret.code) {
+                                layer.msg(ret.msg, {
+                                    time: 1200
+                                }, function () {
+                                    location.reload(true);
+                                });
+                            }
+                        });
+                    },
+                    no: function (index) {
+                        layer.close(index);
+                    }
+                });
+            },
+            import_user: function () {
+                window.open('{:url("import_user")}', '_self');
+            },
+            sort_up: function (id) {
+                var vars = "id=" + id;
+                send_ajax("{:url('sort_up')}", vars, function (data) {
+                    if (data.code) {
+                        layer.msg(data.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(data.info);
+                    }
+                });
+            },
+            sort_down: function (id) {
+                var vars = "id=" + id;
+                send_ajax("{:url('sort_down')}", vars, function (data) {
+                    if (data.code) {
+                        layer.msg(data.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(data.info);
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+        var laypage = layui.laypage;
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'pagination',
+            limits: [10, 20, 50, 100, 1000],
+            layout: ['prev', 'page', 'next', 'skip', 'limit', 'count'],
+            jump: function (obj, first) {
+                //得到每页显示的条数
+                if (!first) {
+                    console.log(obj.curr);
+                    //得到当前页，以便向服务端请求对应页的数据。
+                    console.log(obj.limit);
+
+                    $("#limit").val(obj.limit);
+                    $("#curr").val(obj.curr);
+                    $('#form_search').submit();
+                }
+            },
+            page: "{$page|default=''}",
+            limit: "{$limit|default=''}",
+        });
+    });
+</script>
+{/block}

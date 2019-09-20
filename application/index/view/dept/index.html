@@ -1,0 +1,282 @@
+{extend name="layout/detail" /}
+{block name="content"}
+<input id="dept_id">
+<div class="td-content-wrap">
+    <div class="layui-tab td-tab-1">
+        <ul class="layui-tab-title">
+            <li onclick="user_index();">员工管理</li>
+            <li onclick="role_index()">角色管理</li>
+            <li class="layui-this" onclick="dept_index()">组织管理</li>
+        </ul>
+    </div>
+    <div class="space-20"></div>
+    <div class="p20" style="">
+        <div class="w27" style="position: absolute;">
+            <div class="tree-menu">
+                {:tree_menu($dept_tree)}
+            </div>
+        </div>
+        <div style="width:auto;margin-left:290px;clear: both">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span> 部门信息</span>
+                    <span class="tool">
+                        <a class="layui-btn layui-btn-sm layui-btn-danger" onclick="del_dept()">删除</a>
+                        <a class="layui-btn layui-btn-sm" onclick="edit_dept()">编辑</a>
+                        <a class="layui-btn layui-btn-sm" onclick="add_dept()">添加</a>
+                    </span>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-sm6">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称：</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-form-mid"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-sm6">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">负责人：</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-form-mid"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    人员信息
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>部门</th>
+                            <th>岗位</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span>岗位信息</span>
+                    <span class="tool">
+                        <a class="layui-btn layui-btn-sm" onclick="add_position()">新增</a>
+                    </span>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>部门</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/html" id="tool_bar">
+
+    {{#  if(d.is_valid == "0"){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="set_valid">启用</a>
+    {{#  } }}
+
+    {{#  if(d.is_valid == "1"){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="set_invalid">禁用</a>
+    {{#  } }}
+
+    <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="lock">冻结</a>
+    <a class="layui-btn layui-btn-xs" lay-event="handover">交接工作</a>
+
+</script>
+<script>
+    layui.use(['element', 'table'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var where = {};
+
+        // 记录返回地址
+        set_return_url(null);
+
+        // 页面用到方法
+        var fn = {
+            user_index: function () {
+                window.open('{:url("User/index")}', '_self');
+            },
+            role_index: function () {
+                window.open('{:url("Role/index")}', '_self');
+            },
+            dept_index: function () {
+                window.open('{:url("Dept/index")}', '_self');
+            },
+            form_search: function () {
+                where = serialize_form('#form_search');
+                tableIns.reload({
+                    where: where
+                });
+            },
+            adv_search: function () {
+                where = serialize_form('#form_adv_search');
+                tableIns.reload({
+                    where: where
+                });
+            },
+            add_dept: function (data) {
+                popup_open('{:url("add_dept")}', 560, 470);
+            },
+            edit_dept: function (data) {
+                popup_open('{:url("edit_dept")}', 560, 470);
+            },
+            del_dept: function (data) {
+                popup_open('{:url("del_dept")}', 560, 470);
+            },
+            add_position: function (data) {
+                dept_id = $("#dept_id").val();
+
+                if (dept_id == '') {
+                    layer.msg('请选择部门');
+                    return;
+                }
+                popup_open('{:url("add_position")}?dept_id=' + dept_id, 560, 470);
+            },
+            edit_position: function (data) {
+                popup_open('{:url("edit_position")}', 560, 470);
+            },
+            del_position: function (data) {
+                popup_open('{:url("del_position")}', 560, 470);
+            },
+            read: function (data) {
+                window.open('{:url("read")}?id=' + data.id, '_self');
+            },
+            edit: function (data) {
+                window.open('{:url("edit")}?id=' + data.id, '_self');
+            },
+            set_valid: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('set_valid')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            set_invalid: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('set_invalid')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            sort_up: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('sort_up')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            sort_down: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('sort_down')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            del: function (data) {
+                layer.msg('确定要删除吗?', {
+                    time: 0,
+                    btn: ['确定', '取消'],
+                    yes: function (index) {
+                        var vars = 'id=' + data.id;
+                        $.get("{:url('del')}", vars, function (res) {
+                            if (res.code) {
+                                layer.msg(res.msg, {
+                                    time: 1200
+                                }, function () {
+                                    location.reload(true);
+                                });
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        });
+                    },
+                    no: function (index) {
+                        layer.close(index);
+                    }
+                });
+            },
+        };
+        win_exp(fn);
+
+        $(".tree-menu a").click(function () {
+            $this = $(this);
+
+            dept_id = $this.attr("node");
+            $("#dept_id").val(dept_id);
+
+            $(".tree-menu a.active").removeClass("active");
+            $this.addClass("active");
+
+            let vars = 'dept_id=' + dept_id;
+
+            $.get("{:url('get_dept_info')}", vars, function () {
+
+            });
+        });
+
+    });
+</script>
+{/block}

@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+/**
+ *  Author: ToDo Meng
+ *  Date:   2017.10.24
+ *  Time:   09:00
+ *  Desc:   网站主体公共样式表
+**/
+
+/************      Common      ************/
+
+html, body {
+}
+
+/************      Common      ************/
+
+/************      Header      ************/
+
+
+
+/************      Header      ************/
+
+/************      Content     ************/
+
+.layui-card-body .layui-elem-field {
+    padding: 15px 15px;
+}
+.box-shadow {
+    box-shadow: 0 2px 8px 0 #deeaf5;
+}
+.box-shadow-hover:hover {
+    color: #0d8ee9;
+    box-shadow: 0 2px 8px 0 #deeaf5;
+}
+.progress-title.layui-progress-text {
+    font-size: 1.1rem;
+}
+
+
+/************      数据看板     ************/
+
+.body-icon-wrap {}
+.body-icon-wrap img {
+    width: 5rem;
+    height: 5rem;
+    display: block;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+.echart-item-wrap {
+    height: 25rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+}
+.echart-tips-wrap {
+    height: 27rem;
+}
+
+
+
+/************      Content     ************/
+
+/************      Footer      ************/
+
+.footer-wrap {
+}
+.footer-wrap .powerby-wrap {
+}
+/************      Footer      ************/

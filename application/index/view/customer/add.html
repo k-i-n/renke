@@ -1,0 +1,64 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+<input type="hidden" name="ajax" id="ajax" value="1">
+<h1 class="main-title">添加用户</h1>
+<hr>
+<form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+	<input type="hidden" name="opmode" value="add">
+	<div class="layui-form-item">
+		<label class="layui-form-label required">登录名：</label>
+		<div class="layui-input-block w19">
+			<input type="text" name="emp_no"  placeholder="请输入登录名" class="layui-input" check="required" info="请输入登录名">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label required">姓名：</label>
+		<div class="layui-input-block w19">
+			<input type="text" name="name"  placeholder="请输入名称" class="layui-input" check="required" info="请输入名称">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">排序：</label>
+		<div class="layui-input-block w6">
+			<input type="text" name="sort"  class="layui-input" >
+		</div>
+	</div>
+	<hr>
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block">
+			<a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">保存</a>
+			<a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+		</div>
+	</div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+	layui.use(['form'], function() {
+		var fn = {
+			select_dept : function() {
+				winopen("{:url('select_dept')}", 560, 470);
+			},
+			save : function() {
+				send_form("form_data", "{:url('save')}", "{:url('index')}", function(ret) {
+					if (ret.code) {
+						layer.msg(ret.msg, {
+							time : 1200
+						}, function() {
+							location.href = "{:url('index')}";
+						});
+					} else {
+						layer.msg(ret.msg);
+						return false;
+					}
+				});
+			}
+		};
+		win_exp(fn);
+
+	}); 
+</script>
+{/block}

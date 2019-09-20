@@ -1,0 +1,56 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+<h1 class="main-title">导入用户</h1>
+<hr>
+<form method='post' id="form_data" enctype="multipart/form-data">
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block w19">
+			<a class="layui-btn"  onclick="download_tpl();">下载导入模版</a>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">选择文件</label>
+		<div class="layui-input-block w19">
+			<input type="file" name="uploadfile" value="" >
+		</div>
+	</div>
+	<hr>
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block">
+			<a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">保存</a>
+			<a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+		</div>
+	</div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+	layui.use(['form', 'element'], function() {
+		var fn = {
+			download_tpl : function() {
+				url = '__ROOT__{:config("tpl_path")}user.xls';
+				window.open(url, '_new');
+			},
+			save : function() {
+				send_form("form_data", "{:url('import_user')}", "{:url('index')}", function(ret) {
+					if (ret.code) {
+						layer.msg(ret.msg, {
+							time : 1200
+						}, function() {
+							location.href = "{:url('import_user')}";
+						});
+					} else {
+						layer.msg(ret.msg);
+						return false;
+					}
+				});
+			}
+		};
+		win_exp(fn);
+	}); 
+</script>
+{/block}

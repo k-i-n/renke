@@ -1,0 +1,55 @@
+{extend name="layout/popup" /}
+{block name="content"}
+<input type="hidden" name="ajax" id="ajax" value="1">
+<div class="popup-header">
+    <h1>添加岗位</h1>
+</div>
+<div class="popup-body">
+    <div class="space-20"></div>
+    <form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+        <input type="hidden" name="opmode" value="add">
+        <input type="hidden" id="dept_id" name="dept_id" value="{$dept_id}">
+        <div class="layui-row">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">岗位名称：</label>
+                <div class="layui-input-block w19">
+                    <input type="text" name="name" placeholder="" class="layui-input" check="required" info="请输入名称">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="popup-footer">
+    <a class="layui-btn layui-btn-primary" onclick="popup_close();">取消</a>
+    <a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">确定</a>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form'], function () {
+        var fn = {
+            select_dept: function () {
+                winopen("{:url('select_dept')}", 560, 470);
+            },
+            save: function () {
+                send_form("form_data", "{:url('Position/save')}", "{:url('index')}", function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            popup_close();
+                            parent.location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+    });
+</script>
+{/block}

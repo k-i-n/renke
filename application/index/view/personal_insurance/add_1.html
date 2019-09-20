@@ -1,0 +1,137 @@
+{extend name="layout/popup" /}
+{block name="content"}
+<input type="hidden" name="ajax" id="ajax" value="1">
+<div class="popup-header">
+    <h1>添加用户</h1>
+</div>
+<div class="popup-body">
+    <form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+        <input type="hidden" name="opmode" value="add">
+        <div class="layui-row">
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">姓名：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="emp_no" placeholder="请输入姓名" class="layui-input" check="required"
+                               info="请输入登录名">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">手机号：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="name" placeholder="请输入手机号" class="layui-input" check="required"
+                               info="请输入手机号">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">身份证号：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="emp_no" placeholder="请输入身份证号" class="layui-input" check="required"
+                               info="请输入身份证号">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">缴纳地区：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="name" placeholder="请选择缴纳地区" class="layui-input" check="required"
+                               info="请选择缴纳地区">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">政策名称：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="emp_no" placeholder="请选择政策" class="layui-input" check="required"
+                               info="请选择政策">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">缴纳类型：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="name" placeholder="请选择缴纳类型" class="layui-input" check="required"
+                               info="请选择缴纳类型">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">户籍性质：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="emp_no" placeholder="请选择户籍性质" class="layui-input" check="required"
+                               info="请选择户籍性质">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">办理方式：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="name" placeholder="请选择办理方式" class="layui-input" check="required"
+                               info="请选择办理方式">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">缴纳月份：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="name" placeholder="请输入名称" class="layui-input" check="required"
+                               info="请输入名称">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">公积金基数：</label>
+                    <div class="layui-input-block w19">
+                        <input type="text" name="name" placeholder="请输入名称" class="layui-input" check="required"
+                               info="请输入名称">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="popup-footer">
+    <a class="layui-btn layui-btn-primary" onclick="popup_close();">取消</a>
+    <a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">确定</a>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form'], function () {
+        var fn = {
+            select_dept: function () {
+                winopen("{:url('select_dept')}", 560, 470);
+            },
+            save: function () {
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            popup_close();
+                            parent.location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+    });
+</script>
+{/block}

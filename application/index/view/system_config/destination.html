@@ -1,0 +1,275 @@
+{extend name="layout/index" /}
+
+{block name="content"}
+<input id="ajax" value="1" type="hidden">
+<h1 class="main-title">目的地</h1>
+<hr>
+<form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+    <input type="hidden" name="data_type" value="home">
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                轮播图
+            </li>
+            <li>
+                推荐行程
+            </li>
+            <li>
+                推荐旅行社
+            </li>
+            <li>
+                推荐酒店
+            </li>
+            <li>
+                结伴行程
+            </li>
+            <li>
+                精选博客
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">轮播图</label>
+                    <div class="layui-input-block">
+                        {:widget('FileUpload/edit',array('home_slide',get_system_val('home_slide',$system_data)))}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐行程标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="holiday_title" placeholder="推荐行程标题" class="layui-input"
+                               value="{:get_system_val('holiday_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐行程副标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="holiday_sub_title" placeholder="推荐行程标题" class="layui-input"
+                               value="{:get_system_val('holiday_sub_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item hidden">
+                    <label class="layui-form-label">推荐行程</label>
+                    <div class="layui-input-block">
+                        <div class="muti-select">
+                            <input class="id_list" id="holiday_id_list" name="holiday_id_list" type="hidden">
+                            <input class="html" id="holiday_name" name="holiday_name" type="hidden">
+                            <div class="wrap" id="holiday_wrap">{:get_system_val('holiday_name',$system_data)}</div>
+                            <a class="layui-btn" onclick="select_holiday();">选择</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐旅行社标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="partner_title" placeholder="推荐行程标题" class="layui-input"
+                               value="{:get_system_val('partner_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐旅行社副标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="partner_sub_title" placeholder="推荐旅行社副标题" class="layui-input"
+                               value="{:get_system_val('partner_sub_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item hidden">
+                    <label class="layui-form-label">推荐旅行社</label>
+                    <div class="layui-input-block">
+                        <div class="muti-select">
+                            <input class="id_list" id="partner_id_list" name="partner_id_list" type="hidden">
+                            <input class="html" id="partner_name" name="partner_name" type="hidden" value="">
+                            <div class="wrap" id="partner_wrap">{:get_system_val('partner_name',$system_data)}</div>
+                            <a class="layui-btn" onclick="select_partner();">选择</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐酒店标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="hotel_title" placeholder="推荐酒店标题" class="layui-input"
+                               value="{:get_system_val('hotel_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐酒店副标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="hotel_sub_title" placeholder="推荐酒店副标题" class="layui-input"
+                               value="{:get_system_val('hotel_sub_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item hidden">
+                    <label class="layui-form-label">推荐酒店</label>
+                    <div class="layui-input-block">
+                        <div class="muti-select">
+                            <input class="id_list" id="hotel_id_list" name="hotel_id_list" type="hidden">
+                            <input class="html" id="hotel_html" name="hotel_html" type="hidden" value="">
+                            <div class="wrap" id="partner_wrap">{:get_system_val('hotel_html',$system_data)}</div>
+                            <a class="layui-btn" onclick="select_hotel();">选择</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item ">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">目的地标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="destination_title" placeholder="目的地标题" class="layui-input"
+                               value="{:get_system_val('destination_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">目的地副标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="destination_sub_title" placeholder="目的地副标题" class="layui-input"
+                               value="{:get_system_val('destination_sub_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item hidden">
+                    <label class="layui-form-label">目的地</label>
+                    <div class="layui-input-block">
+                        <div class="muti-select">
+                            <input class="id_list" id="destination_id_list" name="destination_id_list" type="hidden">
+                            <input class="html" id="destination_name" name="destination_name" type="hidden">
+                            <div class="wrap" id="destination_wrap">{:get_system_val('destination_name',$system_data)}
+                            </div>
+                            <a class="layui-btn" onclick="select_destination();">选择</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结伴标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="companion_title" placeholder="结伴标题" class="layui-input"
+                               value="{:get_system_val('companion_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结伴副标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="companion_sub_title" placeholder="结伴副标题" class="layui-input"
+                               value="{:get_system_val('companion_sub_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item hidden">
+                    <label class="layui-form-label">结伴</label>
+                    <div class="layui-input-block">
+                        <div class="muti-select">
+                            <input class="id_list" id="companion_id_list" name="companion_id_list" type="hidden">
+                            <input class="html" id="companion_name" name="companion_name" type="hidden">
+                            <div class="wrap" id="companion_wrap">{:get_system_val('companion_name',$system_data)}</div>
+                            <a class="layui-btn" onclick="select_companion();">选择</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item ">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">博客标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="blog_title" placeholder="博客标题" class="layui-input"
+                               value="{:get_system_val('blog_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">博客副标题</label>
+                    <div class="layui-input-block w34">
+                        <input type="text" name="blog_sub_title" placeholder="博客副标题" class="layui-input"
+                               value="{:get_system_val('blog_sub_title',$system_data)}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">博客</label>
+                    <div class="layui-input-block">
+                        <div class="muti-select">
+                            <input class="id_list" id="blog_id_list" name="blog_id_list" type="hidden">
+                            <input class="html" id="blog_name" name="blog_name" type="hidden">
+                            <div class="wrap" id="blog_wrap">{:get_system_val('blog_name',$system_data)}</div>
+                            <a class="layui-btn" onclick="select_blog();">选择</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">保存</a>
+            <a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+    var upload_url = "{:url('upload')}";
+
+    layui.use(['element', 'uploader', 'ueditor'], function () {
+        set_return_url(null);
+        var fn = {
+            select_holiday: function () {
+                winopen("{:url('select_holiday')}", 560, 470);
+            },
+            select_partner: function () {
+                winopen("{:url('select_partner')}", 560, 470);
+            },
+            select_category: function () {
+                winopen("{:url('select_category')}", 560, 470);
+            },
+            select_destination: function () {
+                winopen("{:url('select_destination')}", 560, 470);
+            },
+            select_companion: function () {
+                winopen("{:url('select_companion')}", 560, 470);
+            },
+            select_blog: function () {
+                winopen("{:url('select_blog')}", 560, 470);
+            },
+            save: function () {
+
+                $(".muti-select").each(function () {
+                    $muti_select = $(this);
+                    var id_list = new Array();
+
+                    $muti_select.find("span").each(function () {
+                        $span = $(this);
+                        id_list.push($span.attr('data'));
+                    });
+                    $muti_select.find('.id_list').eq(0).val(id_list);
+                    $muti_select.find('.html').eq(0).val($muti_select.find('.wrap').html());
+                });
+
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+        $(document).on('click', '.item i', function () {
+            $(this).parent().remove();
+        });
+    });
+</script>
+{/block}

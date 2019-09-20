@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>山东科技大学-资产管理处</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/public.css">
+    <script src="/js/index.js"></script>
+    <link rel="stylesheet" href="/css/service_guide_service_item.css">
+</head>
+
+<body>
+<div class="header_t">
+    <div class="wd1200">
+        <div class="t_left">
+            <div class="wd5_l">
+                <div class="logo"></div>
+                <div
+                        style="	width: 1px;height: 62px;background-color: #ffffff;margin-left:24px;margin-right: 24px;">
+                </div>
+                <div class="zcglc"></div>
+            </div>
+            <div class="wd5_r">
+                <div class="wd5_r_t">
+                    <a href="javascript:;" onclick="SetHome(this,window.location)"><span>设为首页</span></a>
+                    <a href="javascript:;" onclick="addFavorite()"><span>加入收藏</span></a>
+                    <a href="javascript:;" onclick="window.print()"><span>打印本页</span></a>
+                </div>
+                <div class="wd5_r_b">
+                    <img class="eye" src="/img/eye.png" alt="">
+                    {php}
+                    $num=visitor_count();
+                    {/php}
+                    您是第 {$num} 位访客</div>
+            </div>
+        </div>
+        <div class="t_right"></div>
+    </div>
+    <div class="header_t_1">
+        <ul class="wd1200" style="height: 54px;display: flex;background: #0858a3">
+            <!--获取导航部分数据，根据指定参数-->
+            {php}
+            $category=get_article_category();
+            {/php}
+            {foreach $category as $value1}
+            {if $value1.pid==0}
+            <a href="/home/article/index/id/{$value1.id}" class="header_t_1_tab">
+                <li>{$value1.name}</li>
+            </a>
+            {/if}
+            {/foreach}
+        </ul>
+    </div>
+</div>
+<div class="bg-image">
+    <div class="wd1200" style="height: auto;padding-top:30px;display: flex;justify-content: space-between">
+        <div class="wd300">
+            <div class="tab_title">相关内容</div>
+            <ul class="tab_item">
+                {php}
+                if(isset($id)){
+                $daohang=get_nav($id);
+                }else{
+                $daohang;
+                }
+                {/php}
+                {foreach $daohang as $value}
+                <a href="/home/article/index/id/{$value.id}">
+                    <li class="item checked">
+                        <img class="right_arrow" src="/img/right_arrow.png" alt="">
+                        <span>{$value.name}</span>
+                    </li>
+                </a>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="wd900">
+            <div class="right_top">
+                {php}
+                if(isset($id)){
+                $mian1=article_crumbs11($id);
+                $mian2=article_crumbs12($id);
+                $id1=article_crumbs11_1id($id);
+                $id2=article_crumbs12_2id($id);
+                }else{
+                $mian1=article_crumbs21($aid);
+                $mian2=article_crumbs22($aid);
+                $id1=article_crumbs21_1id($aid);
+                $id2=article_crumbs21_2id($aid);
+                }
+                {/php}
+                {if (isset($id))}
+                <div>您当前所在位置：<a href="/home/article/index/id/{$id1}">{$mian1}</a> > <a href="/home/article/index/id/{$id2}">{$mian2}</a> </div>
+                {else}
+                <div>您当前所在位置：<a href="/home/article/index/id/{$id1}">{$mian1}</a> > <a href="/home/article/index/id/{$id2}">{$mian2}</a> </div>
+                {/if}
+            </div>
+            <div class="line">
+                <div style="width: 104px;height:4px;background-color:#01478c;"></div>
+            </div>
+            <div class="title" style="font-size: 16px;font-weight: bold">
+                {php}
+                if(isset($id)){
+                $article=get_article($id);
+                }else{
+                $article;
+                }
+                {/php}
+                {$article.name}
+            </div>
+            <div class="editor" style="padding: 16px 40px 46px 40px;font-size: 16px;color: #333333;line-height: 25px;">
+                {$article.content}
+            </div>
+        </div>
+    </div>
+    <div class="header_m_top" style="margin-top: 33px;">
+        <div class="news">
+            <div class="title" style="justify-content: unset">
+                <div class="title_left">
+                    <img class="email" src="/img/lianjie.png" style="width: 16px;height: 18px;" alt="">
+                    <div class="news_title">友情链接</div>
+                </div>
+                <div class="dropup" style="margin-left: 43px;">
+                    <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        政府部门
+                        <span class="caretw"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $zhengfu=get_block_category("zhengfu");
+                        {/php}
+
+                        {volist name="zhengfu" id="vo" offset="0" length='4'}
+                        <li><a href="">{$vo.bname}</a></li>
+                        {/volist}
+                    </ul>
+                </div>
+                <div class="dropup" style="margin-left: 100px;">
+                    <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        兄弟院校
+                        <span class="caretw"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $xiongdi=get_block_category("xiongdi");
+                        {/php}
+
+                        {volist name="xiongdi" id="vo" offset="0" length='4'}
+                        <li><a href="">{$vo.bname}</a></li>
+                        {/volist}
+                    </ul>
+                </div>
+                <div class="dropup" style="margin-left: 100px;">
+                    <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        校园内部
+                        <span class="caretw"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $xiaoyuan=get_block_category("xiaoyuan");
+                        {/php}
+
+                        {volist name="zhengfu" id="vo" offset="0" length='4'}
+                        <li><a href="">{$vo.bname}</a></li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header_b">
+    <div style="margin-bottom: 5px;">
+        <span>地址：山东省青岛市经济技术开发区前湾港路579号</span>
+        <span style="margin-left: 19px">邮政编码： 266510 Email:zcc@sdust.edu.cn</span>
+    </div>
+    <div>
+        版权所有©山东科技大学-资产管理处
+    </div>
+</div>
+</body>
+
+</html>

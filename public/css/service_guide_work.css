@@ -1,0 +1,20 @@
+.list{
+    margin: 0 40px;
+    height: 68px;
+    align-items: center;
+    border-bottom: 1px #e6e6e6 solid; 
+    display: flex;
+    justify-content: space-between;
+}
+.list .title_left{
+	font-size: 16px;
+    color: #333333;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    width: 700px;
+}
+.list .title_right{
+	font-size: 16px;
+	color: #333333;
+}

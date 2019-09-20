@@ -1,0 +1,79 @@
+{extend name="layout/index" /}
+
+{block name="content"}
+<input id="ajax" value="1" type="hidden">
+<h1 class="main-title">后台任务</h1>
+<form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+	<input type="hidden" name="data_type" value="timer">
+	<div class="layui-form-item">
+		<label class="layui-form-label">状态</label>
+		<div class="layui-input-block w19">
+			<div class="layui-form-mid">
+				{eq name="running_status" value="1"}
+				<button class="layui-btn layui-btn-radius layui-btn-sm layui-btn-normal">
+					运行中
+				</button>
+				{/eq}
+				{eq name="running_status" value="0"}
+				<button class="layui-btn layui-btn-radius layui-btn-sm layui-btn-danger">
+					已停止
+				</button>
+				{/eq}
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">开关</label>
+		<div class="layui-input-block">
+			<input type="checkbox" name="timer_switch" lay-skin="switch" value="1" {eq name="timer_switch" value="1"}checked="checked"{/eq}>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">执行时间</label>
+		<div class="layui-input-block">
+			<input type="text" name="task_time" id="task_time" class="layui-input w10" value="{$task_time}">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"></label>
+		<div class="layui-input-block">
+			<a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">保存</a>
+			<a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+		</div>
+	</div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+	layui.use(['element', 'form', 'laydate'], function() {
+		var laydate = layui.laydate;
+		set_return_url(null);
+		var fn = {
+			save : function() {
+				send_form("form_data", "{:url('save')}", "{:url('index')}", function(ret) {
+					if (ret.code) {
+						layer.msg(ret.msg, {
+							time : 1200
+						}, function() {
+							send_ajax('/public/timer.php');
+							location.reload(true);
+						});
+					} else {
+						layer.msg(ret.msg);
+						return false;
+					}
+				});
+			}
+		};
+		win_exp(fn);
+
+		laydate.render({
+			elem : '#task_time',
+			type : 'time',
+			format : 'HH:mm'
+
+		});
+	}); 
+</script>
+{/block}

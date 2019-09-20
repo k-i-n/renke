@@ -1,0 +1,141 @@
+{extend name="layout/blank" /}
+
+{block name="content"}
+<style>
+    body {
+        height: 100%;
+    }
+
+    .login-box {
+        position: relative;
+        width: 760px;
+        height: 475px;
+        margin-top: 10%;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid #ddd;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .login-box h1 {
+        font-size: 36px;
+        text-align: center;
+        padding-top: 50px;
+        padding-bottom: 30px;
+        color: #3d3d3d !important;
+    }
+
+    .layui-form {
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .layui-input {
+        height: 48px;
+        margin-top: 30px;
+    }
+
+    .verify_code {
+        text-align: center;
+    }
+
+    .verify_code img {
+        padding-top: 10px;
+    }
+
+    .layui-btn {
+        margin-top: 30px;
+        width: 100%;
+        background: #009688;
+    }
+
+    .copright {
+        position: fixed;
+        right: 15px;
+        bottom: 0px;
+        color: #4E5465;
+        text-align: right;
+        padding-left: 15px;
+        padding-bottom: 15px;
+    }
+
+    /* 适配多设备 */
+    @media screen and (max-width: 768px) {
+        body, html {
+            height: 100%;
+        }
+
+        .login-box {
+            margin-top: 0px;
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        .layui-form {
+            width: 280px;
+        }
+    }
+</style>
+<img src="/static/image/login_bg_big.png"
+     style="max-width:100vw;max-height:100vh;position: absolute;top:0px;left:0px;">
+<div class="login-box">
+    <input id='ajax' value="1" type="hidden">
+    <h1 class="text-center">{:get_system_config('system_name','system')}</h1>
+    <form method="post" id="form_login" action="/index.php?m=&c=public&a=check_login" class="layui-form">
+        <div class="emp_no">
+            <input type="text" class="layui-input" id="emp_no" name="emp_no" placeholder="帐号" check="required"
+                   info="请输入帐号"/>
+        </div>
+        <div class="password">
+            <input class="layui-input" id="password" type="password" name="password" placeholder="密码" info="required"
+                   info="请输入密码"/>
+        </div>
+        <div class="verify_code">
+            <div class="layui-form-item hidden">
+                <span class="col-sm-3  layui-form-label"> </span>
+                <div class="col-sm-9">
+                    <label class="inline pull-left col-3">
+                        <input type="checkbox" name="remember" value="1"/>
+                        <span class="lbl"> </span> </label>
+                    <label for="remember-me">记住我的登录状态</label>
+                </div>
+            </div>
+        </div>
+        <div class="login">
+            <a lay-submit lay-filter="*" class="layui-btn layui-btn-del" onclick="login()">登录</a>
+        </div>
+    </form>
+    <div class="copright">
+        版权所有：
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['element'], function () {
+        set_return_url(null);
+        var fn = {
+            login: function () {
+                send_form("form_login", "{:url('check_login')}", "{:url('index/index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            location.href = "{:url('index/index')}";
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            },
+        };
+        win_exp(fn);
+    });
+</script>
+{/block}

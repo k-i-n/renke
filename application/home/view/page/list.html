@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>山东科技大学-资产管理处</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/service_guide_service_item.css">
+    <link rel="stylesheet" href="/css/service_guide_work.css">
+    <link rel="stylesheet" href="/css/guizhang_framework_house.css">
+    <link rel="stylesheet" href="/css/guizhang_framework_zichan.css">
+    <style type="text/css">
+        .pagination li{list-style:none;float:left;margin-left:10px;
+            padding:0 10px;
+            background-color:#5a98de;
+            border:1px solid #ccc;
+            height:26px;
+            line-height:26px;
+            cursor:pointer;color:#fff;
+        }
+        .pagination li a{color:white;padding: 0;line-height: inherit;border: none;}
+        .pagination li a:hover{background-color: #5a98de;}
+        .pagination li.active{background-color:white;color:gray;}
+        .pagination li.disabled{background-color:white;color:gray;}
+    </style>
+
+
+</head>
+
+<body>
+
+
+<div class="header_t">
+    <div class="wd1200">
+        <div class="t_left">
+            <div class="wd5_l">
+                <div class="logo"></div>
+                <div
+                        style="	width: 1px;height: 62px;background-color: #ffffff;margin-left:24px;margin-right: 24px;">
+                </div>
+                <div class="zcglc"></div>
+            </div>
+            <div class="wd5_r">
+                <div class="wd5_r_t">
+                    <a href="javascript:;" onclick="SetHome(this,window.location)"><span>设为首页</span></a>
+                    <a href="javascript:;" onclick="addFavorite()"><span>加入收藏</span></a>
+                    <a href="javascript:;" onclick="window.print()"><span>打印本页</span></a>
+                </div>
+                <div class="wd5_r_b">
+                    <img class="eye" src="/img/eye.png" alt="">
+                    {php}
+                    $num=visitor_count();
+                    {/php}
+                    您是第 {$num} 位访客</div>
+            </div>
+        </div>
+        <div class="t_right"></div>
+    </div>
+    <div class="header_t_1">
+        <ul class="wd1200" style="height: 54px;display: flex;background: #0858a3">
+            <!--获取导航部分数据，根据指定参数-->
+            {php}
+            $category=get_article_category("");
+            {/php}
+            {foreach $category as $value1}
+            {if $value1.pid==0}
+            <a href="/home/article/index/id/{$value1.id}" class="header_t_1_tab">
+                <li>{$value1.name}</li>
+            </a>
+            {/if}
+            {/foreach}
+        </ul>
+    </div>
+</div>
+<div class="bg-image">
+    <div class="wd1200" style="height: auto;padding-top:30px;display: flex;justify-content: space-between">
+        <div class="wd300">
+            <div class="tab_title">相关内容</div>
+            <ul class="tab_item" style="padding-bottom:41px;">
+                {php}
+                if(isset($id)){
+                  $daohang=get_nav($id);
+                }else{
+                  $daohang=[];
+                }
+                {/php}
+                {foreach $daohang as $value}
+                <a href="/home/article/index/id/{$value.id}">
+                    <li class="item checked">
+                        <img class="right_arrow" src="/img/right_arrow.png" alt="">
+                        <span>{$value.name}</span>
+                    </li>
+                </a>
+                {/foreach}
+            </ul>
+            <div class="search">
+                <div class="tab_title">站点导航</div>
+                <div class="tab_search">
+                    <div class="tishi">请输入搜索信息：</div>
+                    <!--导航过来-->
+                    {if isset($id)}
+                    <form action="/home/search/search" style="display: flex;flex-direction: column;align-items: center;margin: 0 0 2px;" method="post">
+                    <input type="text" class="input" id="content" name="content"/>
+                    <input type="hidden" name="cid" value="{$id}"/>
+                    <button class="search_btn" id="search">搜索</button>
+                    </form>
+                    {/if}
+                    <!--区块过来-->
+                    {if isset($cid)}
+                    <form action="/home/search/search1" style="display: flex;flex-direction: column;align-items: center;margin: 0 0 2px;" method="post">
+                        <input type="text" class="input" id="content" name="content"/>
+                        <input type="hidden" name="cid" value="{$cid}"/>
+                        <button class="search_btn" id="search">搜索</button>
+                    </form>
+                    {/if}
+                    <div class="tishi_info">在搜索中可以用“+”表示“与”关系，例如:“中国+鲁迅”表示新闻内容中同时存在字符串“中国”和“鲁迅”</div>
+                </div>
+            </div>
+        </div>
+        <div class="wd900">
+            <div class="right_top">
+                {php}
+
+                if(isset($content)&&isset($id)){
+                $mian1=crumbs11($id);
+                $mian2=crumbs12($id);
+                $id1=crumbs11_1id($id);
+                $id2=crumbs11_2id($id);
+
+                }elseif(isset($content)&&isset($cid)){
+                $mian2=crumbs22($cid);
+
+                }elseif(isset($cid)&&!isset($content)){
+                $mian2=crumbs32($cid);
+
+                }else{
+                $mian1=crumbs11($id);
+                $mian2=crumbs12($id);
+                $id1=crumbs11_1id($id);
+                $id2=crumbs11_2id($id);
+                }
+
+                {/php}
+                {if isset($content)&&isset($id)}
+                <div>您当前所在位置：<a href="/home/article/index/id/{$id1}">{$mian1}</a> > <a href="/home/article/index/id/{$id2}">{$mian2}</a> </div>
+                {elseif isset($content)&&isset($cid)}
+                <div>您当前所在位置：<a href="/home/index/index">首页</a> ><a href="/home/more/more/cid/{$cid}">{$mian2}</a>  </div>
+                {elseif !isset($content)&&isset($cid)}
+                <div>您当前所在位置：<a href="/home/index/index">首页</a> ><a href="/home/more/more/cid/{$cid}">{$mian2}</a>  </div>
+                {else}
+                <div>您当前所在位置：<a href="/home/article/index/id/{$id1}">{$mian1}</a> > <a href="/home/article/index/id/{$id2}">{$mian2}</a> </div>
+                {/if}
+            </div>
+            <div class="line">
+                <div style="width: 104px;height:4px;background-color:#01478c;"></div>
+            </div>
+            <ul>
+                {php}
+
+                if(isset($content)&&isset($id)){
+                $article_list_nav=search_get_articlelist($id,$content);
+
+                }elseif(isset($content)&&isset($cid)){
+                $article_list_block=search_get_cat_2($cid,$content);
+
+                }elseif(isset($cid)&&!isset($content)){
+                $article_list_block=get_cat_2($cid);
+
+                }else{
+                $article_list_nav=get_articlelist($id);
+                }
+
+                {/php}
+                {if isset($article_list_nav)}
+                {foreach $article_list_nav as $article}
+                <li class="list">
+                    <a href="/home/title/title/aid/{$article.id}"><div class="title_left">【{$article.aname}】{$article.bname}</div></a>
+                    <span class="title_right">{$article.post_time}</span>
+                </li>
+                {/foreach}
+                {/if}
+
+                {if isset($article_list_block)}
+                {foreach $article_list_block as $article}
+                <li class="list">
+                    <a href="/home/page/page/aid/{$article.id}"><div class="title_left">【{$article.aname}】{$article.bname}</div></a>
+                    <span class="title_right">{$article.post_time}</span>
+                </li>
+                {/foreach}
+                {/if}
+
+            </ul>
+            <div class="page_list" style="color: black">
+                {if isset($article_list_nav)}
+                {$article_list_nav->render()|raw}
+                {/if}
+
+                {if isset($article_list_block)}
+                {$article_list_block->render()|raw}
+                {/if}
+
+            </div>
+        </div>
+    </div>
+    <div class="header_m_top" style="margin-top: 33px;">
+        <div class="news">
+            <div class="title" style="justify-content: unset">
+                <div class="title_left">
+                    <img class="email" src="/img/lianjie.png" style="width: 16px;height: 18px;" alt="">
+                    <div class="news_title">友情链接</div>
+                </div>
+                <div class="dropup" style="margin-left: 43px;">
+                    <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        政府部门
+                        <span class="caretw"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <li><a href="">Action</a></li>
+                        <li><a href="">Another action</a></li>
+                        <li><a href="">Something else here</a></li>
+                        <li><a href="">Separated link</a></li>
+                    </ul>
+                </div>
+                <div class="dropup" style="margin-left: 100px;">
+                    <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        兄弟院校
+                        <span class="caretw"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <li><a href="">Action</a></li>
+                        <li><a href="">Another action</a></li>
+                        <li><a href="">Something else here</a></li>
+                        <li><a href="">Separated link</a></li>
+                    </ul>
+                </div>
+                <div class="dropup" style="margin-left: 100px;">
+                    <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        校园内部
+                        <span class="caretw"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <li><a href="">Action</a></li>
+                        <li><a href="">Another action</a></li>
+                        <li><a href="">Something else here</a></li>
+                        <li><a href="">Separated link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header_b">
+    <div style="margin-bottom: 5px;">
+        <span>地址：山东省青岛市经济技术开发区前湾港路579号</span>
+        <span style="margin-left: 19px">邮政编码： 266510 Email:zcc@sdust.edu.cn</span>
+    </div>
+    <div>
+        版权所有©山东科技大学-资产管理处
+    </div>
+</div>
+<script>
+    //给搜索按钮绑定点击事件
+    $('#search').click(function () {
+        $('form').submit();
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>山东科技大学-资产管理处</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/css/swiper.css">
+    <link rel="stylesheet" href="/css/swiper.min.css">
+    <script src="/js/swiper.js"></script>
+    <script src="/js/swiper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/public.css">
+    <script src="/js/index.js"></script>
+</head>
+
+<body>
+    <div class="header_t">
+        <div class="wd1200">
+            <div class="t_left">
+                <div class="wd5_l">
+                    <div class="logo"></div>
+                    <div
+                        style="	width: 1px;height: 62px;background-color: #ffffff;margin-left:24px;margin-right: 24px;">
+                    </div>
+                    <div class="zcglc"></div>
+                </div>
+                <div class="wd5_r">
+                    <div class="wd5_r_t">
+                        <a href="javascript:;" onclick="SetHome(this,window.location)"><span>设为首页</span></a>
+                        <a href="javascript:;" onclick="addFavorite()"><span>加入收藏</span></a>
+                        <a href="javascript:;" onclick="window.print()"><span>打印本页</span></a>
+                    </div>
+                    <div class="wd5_r_b">
+                        <img class="eye" src="/img/eye.png" alt="">
+                        {php}
+                        $num=visitor_count();
+                        {/php}
+                        您是第 {$num} 位访客</div>
+                </div>
+            </div>
+            <div class="t_right"></div>
+        </div>
+        <div class="header_t_1">
+            <ul class="wd1200" style="height: 54px;display: flex;background: #0858a3">
+                <!--获取导航部分数据，根据指定参数-->
+                {php}
+                $category=get_article_category("");
+                {/php}
+                {foreach $category as $value1}
+                {if $value1.pid==0}
+                <a href="/home/article/index/id/{$value1.id}" class="header_t_1_tab">
+                    <li>{$value1.name}</li>
+                </a>
+                {/if}
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+    <div class="bg-image">
+        <div class="header_m">
+
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <!--获取区块部分数据，根据指定参数-->
+                    {php}
+                    $lunbo=get_block_category("lunbo");
+                    {/php}
+
+                    {volist name="lunbo" id="vo" offset="0" length='3'}
+                    <div class="swiper-slide">
+                        <img src="{$vo.image}">
+                    </div>
+                    {/volist}
+                </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="header_m_top">
+                <div class="news">
+                    <div class="title">
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $zuixin=get_block_category("zuixin");
+                        {/php}
+
+                        {volist name="zuixin" id="vo" offset="0" length='1'}
+                        <div class="title_left">
+                            <img class="naoling" src="/img/naoling.png" style="width: 14px;height: 16px;" alt="">
+                            <div class="news_title">最新动态</div>
+                        </div>
+                        <a href="/home/more/more/cid/{$vo.aid}" class="title_right">
+                            <div>
+                                更多>
+                            </div>
+                        </a>
+                        {/volist}
+                    </div>
+                    <div class="details_info">
+
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $zuixin=get_block_category("zuixin");
+                        {/php}
+
+                        {volist name="zuixin" id="vo" offset="0" length='1'}
+                        <img src="{$vo.image}" class="left_img" alt="" />
+                        <div class="right_desc">
+                            <a href="/home/page/page/aid/{$vo.id}">
+                                <div class="right_title">{$vo.name}</div>
+                                <div class="desc">{$vo.content|strip_tags}</div>
+                            </a>
+                            <div class="date_more">
+                                <div class="date">{$vo.post_time}</div>
+                                <a href="/home/page/page/aid/{$vo.id}" class="more">
+                                    <div>MORE</div>
+                                </a>
+                            </div>
+                        </div>
+                        {/volist}
+                    </div>
+                    <ul class="news_info">
+
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $zuixin=get_block_category("zuixin");
+                        {/php}
+
+                        {volist name="zuixin" id="vo" offset="1" length='5'}
+                        <li class="news_info_item">
+                            <a href="/home/page/page/aid/{$vo.id}">
+                                <div class="news_info_left">
+                                    <img class="right_arrow" src="/img/right_arrow.png" alt="">
+                                    <div class="desc">{$vo.bname}</div>
+                                </div>
+                            </a>
+                            <div class="news_info_right">{$vo.post_time}</div>
+                        </li>
+                        {/volist}
+
+                    </ul>
+                </div>
+                <div class="zhaobiao_info">
+                    <div class="news">
+                        <div class="title">
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $zhaobiao=get_block_category("zhaobiao");
+                            {/php}
+
+                            {volist name="zhaobiao" id="vo" offset="0" length='1'}
+                            <div class="title_left">
+                                <img class="email" src="/img/email.png" style="width: 18px;height: 14px;" alt="">
+                                <div class="news_title">招标信息</div>
+                            </div>
+                            <a href="/home/more/more/cid/{$vo.aid}" class="title_right">
+                                <div>
+                                    更多>
+                                </div>
+                            </a>
+                            {/volist}
+                        </div>
+                        <ul>
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $zhaobiao=get_block_category("zhaobiao");
+                            {/php}
+
+                            {volist name="zhaobiao" id="vo" offset="0" length='5'}
+                            <li class="zhaobiao_info_item">
+                                <a href="/home/page/page/aid/{$vo.id}">
+                                    <div class="title_t">{$vo.bname}</div>
+                                </a>
+                                <div class="title_date">
+                                    <img class="dateimg" src="/img/date.png" alt="">
+                                    <div class="date">{$vo.post_time}</div>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div>
+                <div class="service_guide">
+                    <div class="news">
+                        <div class="title">
+                            <div class="title_left">
+                                <img class="service" src="/img/service.png" style="width: 18px;height: 16px;" alt="">
+                                <div class="news_title">服务指南</div>
+                            </div>
+                        </div>
+                        <ul>
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $fuwu=get_block_category("fuwu");
+                            {/php}
+
+                            {volist name="fuwu" id="vo" offset="0" length='1'}
+                            <li class="service_guide_item">
+                                <a href="/home/article/index/id/21">
+                                    <div class="service_guide_item_title">
+                                        <img class="service_guide_item_img" src="/img/fuwushixiang.png"
+                                            style="width: 18px;height: 18px;" alt="">
+                                        <div class="service_guide_item_title1">{$vo.bname}</div>
+                                    </div>
+                                </a>
+                            </li>
+                            {/volist}
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $fuwu=get_block_category("fuwu");
+                            {/php}
+
+                            {volist name="fuwu" id="vo" offset="1" length='1'}
+                            <li class="service_guide_item">
+                                <a href="/home/article/index/id/22">
+                                    <div class="service_guide_item_title">
+                                        <img class="service_guide_item_img" src="/img/gongzuoliucheng.png"
+                                            style="width: 20px;height: 19px;" alt="">
+                                        <div class="service_guide_item_title1">{$vo.bname}</div>
+                                    </div>
+                                </a>
+                            </li>
+                            {/volist}
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $fuwu=get_block_category("fuwu");
+                            {/php}
+
+                            {volist name="fuwu" id="vo" offset="2" length='1'}
+                            <li class="service_guide_item">
+                                <a href="/home/page/page/aid/{$vo.id}">
+                                    <div class="service_guide_item_title">
+                                        <img class="service_guide_item_img" src="/img/zhengcaimulu.png"
+                                            style="width: 18px;height: 18px;" alt="">
+                                        <div class="service_guide_item_title1">{$vo.bname}</div>
+                                    </div>
+                                </a>
+                            </li>
+                            {/volist}
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $fuwu=get_block_category("fuwu");
+                            {/php}
+
+                            {volist name="fuwu" id="vo" offset="3" length='1'}
+                            <li class="service_guide_item">
+                                <a href="/home/page/page/aid/{$vo.id}">
+                                    <div class="service_guide_item_title">
+                                        <img class="service_guide_item_img" src="/img/zhengfujinkou.png"
+                                            style="width: 20px;height: 10px;" alt="">
+                                        <div class="service_guide_item_title1">{$vo.bname}</div>
+                                    </div>
+                                </a>
+                            </li>
+                            {/volist}
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $fuwu=get_block_category("fuwu");
+                            {/php}
+
+                            {volist name="fuwu" id="vo" offset="4" length='1'}
+                            <li class="service_guide_item">
+                                <a href="/home/page/page/aid/{$vo.id}">
+                                    <div class="service_guide_item_title">
+                                        <img class="service_guide_item_img" src="/img/gudingzichan.png"
+                                            style="width: 18px;height: 18px;" alt="">
+                                        <div class="service_guide_item_title1">{$vo.bname}</div>
+                                    </div>
+                                </a>
+                            </li>
+                            {/volist}
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $fuwu=get_block_category("fuwu");
+                            {/php}
+
+                            {volist name="fuwu" id="vo" offset="5" length='1'}
+                            <li class="service_guide_item">
+                                <a href="/home/page/page/aid/{$vo.id}">
+                                    <div class="service_guide_item_title">
+                                        <img class="service_guide_item_img" src="/img/tongyongpeizhi.png"
+                                            style="width: 18px;height: 16px;" alt="">
+                                        <div class="service_guide_item_title1">{$vo.bname}</div>
+                                    </div>
+                                </a>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="header_m_top" style="margin-top: 33px;">
+                <div class="news">
+                    <!--获取区块部分数据，根据指定参数-->
+                    {php}
+                    $tongzhi=get_block_category("tongzhi");
+                    {/php}
+
+                    {volist name="tongzhi" id="vo" offset="0" length='1'}
+                    <div class="title">
+                        <div class="title_left">
+                            <img class="naoling" src="/img/laba.png" style="width: 17px;height: 16px;" alt="">
+                            <div class="news_title">通知公告</div>
+                        </div>
+                        <a href="/home/more/more/cid/{$vo.aid}" class="title_right">
+                            <div>
+                                更多>
+                            </div>
+                        </a>
+                    </div>
+                    {/volist}
+
+                    <ul class="news_info">
+
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $tongzhi=get_block_category("tongzhi");
+                        {/php}
+
+                        {volist name="tongzhi" id="vo" offset="0" length='5'}
+                        <li class="news_info_item">
+                            <a href="/home/page/page/aid/{$vo.id}">
+                                <div class="news_info_left">
+                                    <img class="right_arrow" src="/img/right_arrow.png" alt="">
+                                    <div class="desc">{$vo.bname}</div>
+                                </div>
+                            </a>
+                            <div class="news_info_right">{$vo.post_time}</div>
+                        </li>
+                        {/volist}
+
+                    </ul>
+                </div>
+                <div class="zhaobiao_info">
+                    <div class="news">
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $ziliao=get_block_category("ziliao");
+                        {/php}
+
+                        {volist name="ziliao" id="vo" offset="0" length='1'}
+                        <div class="title">
+                            <div class="title_left">
+                                <img class="email" src="/img/ziliao.png" style="width: 14px;height: 18px;" alt="">
+                                <div class="news_title">资料下载</div>
+                            </div>
+                            <a href="/home/more/more/cid/{$vo.aid}" class="title_right">
+                                <div>
+                                    更多>
+                                </div>
+                            </a>
+                        </div>
+                        {/volist}
+                        <ul>
+                            <!--获取区块部分数据，根据指定参数-->
+                            {php}
+                            $ziliao=get_block_category("ziliao");
+                            {/php}
+
+                            {volist name="ziliao" id="vo" offset="0" length='3'}
+                            <li class="zhaobiao_info_item">
+                                <a href="/home/page/page/aid/{$vo.id}">
+                                    <div class="title_t">{$vo.bname}</div>
+                                </a>
+                                <div class="title_date">
+                                    <img class="dateimg" src="/img/date.png" alt="">
+                                    <div class="date">{$vo.post_time}</div>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div>
+                <div class="service_guide">
+                    <div class="news">
+                        <div class="title">
+                            <div class="title_left">
+                                <img class="service" src="/img/quick.png" style="width: 16px;height: 16px;" alt="">
+                                <div class="news_title">快速通道</div>
+                            </div>
+                        </div>
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $kuaishu=get_block_category("kuaishu");
+                        {/php}
+
+                        {volist name="kuaishu" id="vo" offset="0" length='1'}
+                        <div class="quicke_guide_item">
+                            <a href="{$vo.burl}">
+                                <div class="quick_guide_item_title"
+                                    style="background: url(/img/quickbg1.png) no-repeat">
+                                    <img class="quick_guide_item_img" src="/img/gdzcglxt.png" alt="">
+                                    <div class="quicke_guide_item_title1">山东科技大学<br />{$vo.bname}</div>
+                                </div>
+                            </a>
+                        </div>
+                        {/volist}
+                        <!--获取区块部分数据，根据指定参数-->
+                        {php}
+                        $kuaishu=get_block_category("kuaishu");
+                        {/php}
+
+                        {volist name="kuaishu" id="vo" offset="1" length='1'}
+                        <div class="quicke_guide_item">
+                            <a href="{$vo.burl}">
+                                <div class="quick_guide_item_title"
+                                    style="background: url(/img/quickbg2.png) no-repeat">
+                                    <img class="quick_guide_item_img" src="/img/fdcglxt.png" alt="">
+                                    <div class="quicke_guide_item_title1">山东科技大学<br />{$vo.bname}</div>
+                                </div>
+                            </a>
+                        </div>
+                        {/volist}
+
+                    </div>
+                </div>
+            </div>
+            <div class="header_m_top" style="margin-top: 33px;">
+                <div class="news">
+                    <div class="title" style="justify-content: unset">
+                        <div class="title_left">
+                            <img class="email" src="/img/lianjie.png" style="width: 16px;height: 18px;" alt="">
+                            <div class="news_title">友情链接</div>
+                        </div>
+                        <div class="dropup" style="margin-left: 43px;">
+                            <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                政府部门
+                                <span class="caretw"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <!--获取区块部分数据，根据指定参数-->
+                                {php}
+                                $zhengfu=get_block_category("zhengfu");
+                                {/php}
+
+                                {volist name="zhengfu" id="vo" offset="0" length='4'}
+                                <li><a href="">{$vo.bname}</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                        <div class="dropup" style="margin-left: 100px;">
+                            <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                兄弟院校
+                                <span class="caretw"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <!--获取区块部分数据，根据指定参数-->
+                                {php}
+                                $xiongdi=get_block_category("xiongdi");
+                                {/php}
+
+                                {volist name="xiongdi" id="vo" offset="0" length='4'}
+                                <li><a href="">{$vo.bname}</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                        <div class="dropup" style="margin-left: 100px;">
+                            <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                校园内部
+                                <span class="caretw"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <!--获取区块部分数据，根据指定参数-->
+                                {php}
+                                $xiaoyuan=get_block_category("xiaoyuan");
+                                {/php}
+
+                                {volist name="zhengfu" id="vo" offset="0" length='4'}
+                                <li><a href="">{$vo.bname}</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header_b">
+        <div style="margin-bottom: 5px;">
+            <span>地址：山东省青岛市经济技术开发区前湾港路579号</span>
+            <span style="margin-left: 19px">邮政编码： 266510 Email:zcc@sdust.edu.cn</span>
+        </div>
+        <div>
+            版权所有©山东科技大学-资产管理处
+        </div>
+    </div>
+    <script>
+        var mySwiper = new Swiper('.swiper-container', {
+            direction: 'horizontal', // 垂直切换选项
+            loop: true, // 循环模式选项
+            autoplay:2000,
+            // 如果需要分页器
+            pagination: '.swiper-pagination',
+            autoplayDisableOnInteraction : false,
+
+        })
+    </script>
+</body>
+
+</html>

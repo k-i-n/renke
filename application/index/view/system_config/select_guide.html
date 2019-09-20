@@ -1,0 +1,125 @@
+{extend name="layout/popup" /}
+
+{block name="content"}
+<input type="hidden" name="val" id="val">
+<input type="hidden" name="name" id="name">
+<h1 class="popup-title">选择导游</h1>
+<div class="simple_search" style="top:10px;">
+	<div class="layui-input-inline w19">
+		<form id="form_search" method="post" action="">
+			<input type="text" id="li_name" name="li_name" class="layui-input" placeholder="城市">
+			<a class="add-on" onclick="form_search();"><i class="fa fa-search"></i></a>
+		</form>
+	</div>
+</div>
+<div class="popup-content">
+	<table id="data_table" lay-filter="data_table"></table>
+</div>
+<script type="text/html" id="tool_bar">
+	<a class="layui-btn layui-btn-xs" lay-event="save">选择</a>
+	<!-- 这里同样支持 laytpl 语法，如： -->
+	{{#  if(d.auth > 2){ }}
+	<a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
+	{{#  } }}
+</script>
+<div class="popup-bottom">
+	<a class="layui-btn hidden" onclick="save();">确定</a>
+	<a class="layui-btn" onclick="popup_close();">关闭</a>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['jquery', 'table'], function() {
+        var table = layui.table;
+        var where = {};
+
+        var $ = layui.jquery;
+        var fn = {
+            form_search : function() {
+                where = $("#form_search").serializeObject();
+                tableIns.reload({
+                    where : where
+                });
+            },
+            save : function(data) {
+                var tpl = '<span class="item" data="{id}">{name}<i class="fa fa-times"></i></span>';
+                html = tpl_parse(tpl, data);
+                                
+                if ($("#guide_wrap span[data='" + data.id + "']", parent.document).length == 0) {
+                    $("#guide_wrap", parent.document).append(html);
+                }
+                //popup_close();
+            }
+        };
+
+        win_exp(fn);
+
+        var page_config = {
+            limits : [10, 20, 50, 100, 1000],
+            layout : ['prev', 'page', 'next', 'skip', 'limit', 'count'],
+        };
+
+        var cols = [[{
+            field : 'name',
+            title : '名称',
+            templet : '<div><span class="space{{d.level}}">&nbsp;</span>{{d.name}}</div>',
+            width : 410
+        }, {
+            toolbar : '#tool_bar',
+            title : '操作',
+            width : 90,
+        }]];
+
+        var tableIns = table.render({
+            loading : false,
+            elem : '#data_table',
+            url : '{:url()}',
+            page : page_config,
+            cols : cols,
+            where : where
+        });
+
+        table.on('tool(data_table)', function(obj) {
+            var data = obj.data;
+            //获得当前行数据
+            var layEvent = obj.event;
+            //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr;
+            //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'read') {
+                edit(data.id);
+            };
+            if (layEvent === 'del') {
+                del(data.id);
+            };
+            if (layEvent === 'edit') {
+                edit(data.id);
+            }
+            if (layEvent === 'stats') {
+                stats(data.id);
+            }
+            if (layEvent === 'save') {
+                save(data);
+            }
+        });
+
+        $.fn.serializeObject = function() {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    }); 
+</script>
+{/block}

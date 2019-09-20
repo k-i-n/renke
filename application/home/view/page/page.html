@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>山东科技大学-资产管理处</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/css/swiper.css">
+    <link rel="stylesheet" href="/css/swiper.min.css">
+    <script src="/js/swiper.js"></script>
+    <script src="/js/swiper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/public.css">
+    <script src="/js/index.js"></script>
+    <link rel="stylesheet" href="/css/service_guide_service_item.css">
+    <link rel="stylesheet" href="/css/fixed_assets.css">
+    <link rel="stylesheet" href="/css/article_detail.css">
+</head>
+
+<body>
+<div class="header_t" >
+    <div class="wd1200">
+        <div class="t_left">
+            <div class="wd5_l">
+                <div class="logo"></div>
+                <div
+                        style="	width: 1px;height: 62px;background-color: #ffffff;margin-left:24px;margin-right: 24px;">
+                </div>
+                <div class="zcglc"></div>
+            </div>
+            <div class="wd5_r">
+                <div class="wd5_r_t">
+                    <a href="javascript:;" onclick="SetHome(this,window.location)"><span>设为首页</span></a>
+                    <a href="javascript:;" onclick="addFavorite()"><span>加入收藏</span></a>
+                    <a href="javascript:;" onclick="window.print()"><span>打印本页</span></a>
+                </div>
+                <div class="wd5_r_b">
+                    <img class="eye" src="/img/eye.png" alt="">
+                    {php}
+                    $num=visitor_count();
+                    {/php}
+                    您是第 {$num} 位访客</div>
+            </div>
+        </div>
+        <div class="t_right"></div>
+    </div>
+    <div class="header_t_1">
+        <ul class="wd1200" style="height: 54px;display: flex;background: #0858a3">
+            <!--获取导航部分数据，根据指定参数-->
+            {php}
+            $category=get_article_category("");
+            {/php}
+            {foreach $category as $value1}
+            {if $value1.pid==0}
+            <a href="/home/article/index/id/{$value1.id}" class="header_t_1_tab">
+                <li>{$value1.name}</li>
+            </a>
+            {/if}
+            {/foreach}
+        </ul>
+    </div>
+</div>
+<div class="bg-image" style="padding-top: 30px">
+    <div class="wd120011">
+        <div class="right_top" style="padding-left: 20px">
+            {php}
+            $mian2=detail_crumbs($aid);
+            $id2=detail_crumbs2($aid)
+            {/php}
+            <div>你当前所在的位置：<a href="/home/index/index">首页</a> > <a href="/home/more/more/cid/{$id2}">{$mian2}</a></div>
+        </div>
+        <div class="line">
+            <div style="width: 104px;height:4px;background-color:#01478c;"></div>
+        </div>
+        <div class="editor" style="font-size: 16px;font-weight: bold">
+            {php}
+            $article=get_blockarticle($aid);
+            {/php}
+            <div class="titlee">{$article.name}</div>
+            <div class="datetime">发布时间：{$article.post_time}</div>
+            <div style="width: 1121px;height: 1px;background-color: #7c7c7c;"></div>
+            <img style="margin-top: 30px;padding: 0 40px;" src="{$article.image}" alt="">
+            <div style="padding-top: 30px;font-size: 16px">{$article.content}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header_m_top" style="margin-top: 33px;">
+    <div class="news">
+        <div class="title" style="justify-content: unset">
+            <div class="title_left">
+                <img class="email" src="/img/lianjie.png" style="width: 16px;height: 18px;" alt="">
+                <div class="news_title">友情链接</div>
+            </div>
+            <div class="dropup" style="margin-left: 43px;">
+                <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    政府部门
+                    <span class="caretw"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <li><a href="">Action</a></li>
+                    <li><a href="">Another action</a></li>
+                    <li><a href="">Something else here</a></li>
+                    <li><a href="">Separated link</a></li>
+                </ul>
+            </div>
+            <div class="dropup" style="margin-left: 100px;">
+                <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    兄弟院校
+                    <span class="caretw"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <li><a href="">Action</a></li>
+                    <li><a href="">Another action</a></li>
+                    <li><a href="">Something else here</a></li>
+                    <li><a href="">Separated link</a></li>
+                </ul>
+            </div>
+            <div class="dropup" style="margin-left: 100px;">
+                <button class="btn btn-default option dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    校园内部
+                    <span class="caretw"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <li><a href="">Action</a></li>
+                    <li><a href="">Another action</a></li>
+                    <li><a href="">Something else here</a></li>
+                    <li><a href="">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="header_b">
+    <div style="margin-bottom: 5px;">
+        <span>地址：山东省青岛市经济技术开发区前湾港路579号</span>
+        <span style="margin-left: 19px">邮政编码： 266510 Email:zcc@sdust.edu.cn</span>
+    </div>
+    <div>
+        版权所有©山东科技大学-资产管理处
+    </div>
+</div>
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        direction: 'horizontal', // 垂直切换选项
+        loop: true, // 循环模式选项
+        autoplay: 2000,
+        // 如果需要分页器
+        pagination: '.swiper-pagination',
+        autoplayDisableOnInteraction: false,
+
+    })
+</script>
+</body>
+
+</html>

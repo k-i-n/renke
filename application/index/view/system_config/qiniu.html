@@ -1,0 +1,106 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+<input id="ajax" value="1" type="hidden">
+<div class="layui-tab td-tab-1">
+    <ul class="layui-tab-title">
+        <li onclick="index();">系统设置</li>
+        <li onclick="email()">邮件设置</li>
+        <li class="layui-this" onclick="qiniu()">七牛云</li>
+        <li onclick="wechat()">微信公众号设置</li>
+    </ul>
+</div>
+<div class="space-20"></div>
+<form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+    <input type="hidden" name="data_type" value="system">
+    <div class="layui-form-item">
+        <label class="layui-form-label">accessKey：</label>
+        <div class="layui-input-block w34">
+            <input type="text" class="layui-input" id="qiniu_access_key" name="qiniu_access_key"
+                   check="required"
+                   info="accessKey"
+                   value="{$system_data.qiniu_access_key|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">secretKey：</label>
+        <div class="layui-input-block w34">
+            <input type="text" class="layui-input" id="qiniu_secret_key" name="qiniu_secret_key"
+                   check="required"
+                   info="secretKey"
+                   value="{$system_data.qiniu_secret_key|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">bucket：</label>
+        <div class="layui-input-block w34">
+            <input type="text" class="layui-input" id="qiniu_bucket" name="qiniu_bucket" check="required"
+                   info="bucket"
+                   value="{$system_data.qiniu_bucket|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">绑定域名：</label>
+        <div class="layui-input-block w34">
+            <input type="text" class="layui-input" id="qiniu_domain" name="qiniu_domain" check="required"
+                   info="绑定域名"
+                   value="{$system_data.qiniu_domain|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">管道：</label>
+        <div class="layui-input-block w34">
+            <input type="text" class="layui-input" id="qiniu_pipeline" name="qiniu_pipeline"
+                   check="required"
+                   info="管道"
+                   value="{$system_data.qiniu_pipeline|default=''}">
+        </div>
+    </div>
+    <hr>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <a class="layui-btn" onclick="save();">保存</a>
+            <a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+        </div>
+    </div>
+</form>
+
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['element'], function () {
+        set_return_url(null);
+        var fn = {
+            index: function () {
+                window.open('{:url("SystemConfig/index")}', '_self');
+            },
+            email: function () {
+                window.open('{:url("SystemConfig/email")}', '_self');
+            },
+            qiniu: function () {
+                window.open('{:url("SystemConfig/qiniu")}', '_self');
+            },
+            wechat: function () {
+                window.open('{:url("SystemConfig/wechat")}', '_self');
+            },
+            save: function () {
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+    });
+</script>
+{/block}

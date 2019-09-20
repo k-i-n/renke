@@ -1,0 +1,116 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+<div class="td-content-wrap p20">
+    <h1 class="main-title">区块分类</h1>
+    <hr>
+    <div class="layui-form panel">
+        <a class="layui-btn" onclick="add();">添加</a>
+    </div>
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>URL</th>
+            <th>排序</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="category_arr" id="category" empty="
+        <tr class='data-empty'>
+            <td colspan='6'>无数据</td>
+        </tr>
+        "}
+        <tr>
+            <td><span class="space{$category.level}">&nbsp;</span>{$category.name}</td>
+            <td>{$category.url}</td>
+            <td>{$category.sort}</td>
+            <td>{eq name="$category.is_del" value="0"}启用{/eq}{eq name="$category.is_del" value="1"}禁用{/eq}</td>
+            <td><a class="layui-btn layui-btn-xs" onclick="edit({$category.id})">编辑</a><a
+                    class="layui-btn layui-btn-danger layui-btn-xs" onclick="del({$category['id']})">删除</a><a
+                    class="layui-btn layui-btn-xs" onclick="sort_up({$category.id})"><i
+                    class="fa fa-arrow-up"></i></a><a
+                    class="layui-btn layui-btn-xs" onclick="sort_down({$category.id})"><i class="fa fa-arrow-down"></i></a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'element'], function () {
+        let $ = layui.jquery;
+
+        set_return_url(null);
+
+        let fn = {
+            add: function () {
+                window.open('{:url("add")}', '_self');
+            },
+            edit: function (id) {
+                window.open("{:url('edit')}?id=" + id, '_self');
+            },
+            del: function (id) {
+                layer.msg('确定要删除吗?', {
+                    time: 0,
+                    btn: ['确定', '取消'],
+                    yes: function (index) {
+                        var vars = 'id=' + id;
+                        $.get("{:url('del')}", vars, function (ret) {
+                            if (ret.code) {
+                                layer.msg(ret.msg, {
+                                    time: 1200
+                                }, function () {
+                                    location.reload(true);
+                                });
+                            }
+                        });
+                    },
+                    no: function (index) {
+                        layer.close(index);
+                    }
+                });
+            },
+            sort_up: function (id) {
+                var vars = "id=" + id;
+                $.get("{:url('sort_up')}", vars, function (data) {
+                    if (data.code) {
+                        layer.msg(data.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                });
+            },
+            sort_down: function (id) {
+                var vars = "id=" + id;
+                $.get("{:url('sort_down')}", vars, function (data) {
+                    if (data.code) {
+                        layer.msg(data.info, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(data.info);
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+        var form = layui.form;
+        form.on('select(test)', function (data) {
+            $('#form_search').submit();
+        });
+    });
+</script>
+{/block}

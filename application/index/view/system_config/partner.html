@@ -1,0 +1,205 @@
+{extend name="layout/index" /}
+
+{block name="content"}
+<input id="ajax" value="1" type="hidden">
+<h1 class="main-title">商家合作</h1>
+<hr>
+<form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+    <input type="hidden" name="data_type" value="home">
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                轮播图
+            </li>
+            <li class="hidden">
+                页面1
+            </li>
+            <li class="hidden">
+                页面2
+            </li>
+            <li class="hidden">
+                页面3
+            </li>
+            <li class="hidden">
+                页面4
+            </li>
+            <li class="hidden">
+                页面5
+            </li>
+            <li class="hidden">
+                页面6
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">轮播图</label>
+                    <div class="layui-input-block">
+                        {:widget('FileUpload/edit',array('home_slide',get_system_val('home_slide',$system_data)))}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面1(中文)：</label>
+                    <div class="layui-input-block ueditor" data="page_1">
+                        <textarea id="page_1" name="page_1" type="text/plain" style="height:200px;">{:html_entity_decode(get_system_val('page_1',$system_data))}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面1（英文）：</label>
+                    <div class="layui-input-block ueditor" data="page_1_en">
+                        <textarea id="page_1_en" name="page_1_en" type="text/plain"
+                                  style="height:200px;">{:html_entity_decode(get_system_val('page_1_en',$system_data))}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面2(中文)：</label>
+                    <div class="layui-input-block ueditor" data="page_2">
+                        <textarea id="page_2" name="page_2" type="text/plain" style="height:200px;">{:html_entity_decode(get_system_val('page_2',$system_data))}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面2（英文）：</label>
+                    <div class="layui-input-block ueditor" data="page_2_en">
+                        <textarea id="page_2_en" name="page_2_en" type="text/plain"
+                                  style="height:200px;">{:html_entity_decode(get_system_val('page_2_en',$system_data))}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面3(中文)：</label>
+                    <div class="layui-input-block ueditor" data="page_3">
+                        <textarea id="page_3" name="page_3" type="text/plain" style="height:200px;">{:html_entity_decode(get_system_val('page_3',$system_data))}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面3（英文）：</label>
+                    <div class="layui-input-block ueditor" data="page_3_en">
+                        <textarea id="page_3_en" name="page_3_en" type="text/plain"
+                                  style="height:200px;">{:html_entity_decode(get_system_val('page_3_en',$system_data))}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面4(中文)：</label>
+                    <div class="layui-input-block ueditor" data="page_4">
+                        <textarea id="page_4" name="page_4" type="text/plain" style="height:200px;">{:html_entity_decode(get_system_val('page_4',$system_data))}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面4（英文）：</label>
+                    <div class="layui-input-block ueditor" data="page_4_en">
+                        <textarea id="page_4_en" name="page_4_en" type="text/plain"
+                                  style="height:200px;">{:html_entity_decode(get_system_val('page_4_en',$system_data))}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面5(中文)：</label>
+                    <div class="layui-input-block ueditor" data="page_5">
+                        <textarea id="page_5" name="page_5" type="text/plain" style="height:200px;">{:html_entity_decode(get_system_val('page_5',$system_data))}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面5（英文）：</label>
+                    <div class="layui-input-block ueditor" data="page_5_en">
+                        <textarea id="page_5_en" name="page_5_en" type="text/plain"
+                                  style="height:200px;">{:html_entity_decode(get_system_val('page_5_en',$system_data))}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面6(中文)：</label>
+                    <div class="layui-input-block ueditor" data="page_6">
+                        <textarea id="page_6" name="page_6" type="text/plain" style="height:200px;">{:html_entity_decode(get_system_val('page_6',$system_data))}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面6（英文）：</label>
+                    <div class="layui-input-block ueditor" data="page_6_en">
+                        <textarea id="page_6_en" name="page_6_en" type="text/plain"
+                                  style="height:200px;">{:html_entity_decode(get_system_val('page_6_en',$system_data))}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="save();">保存</a>
+            <a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+    var upload_url = "{:url('upload')}";
+
+    layui.use(['element', 'uploader', 'ueditor'], function () {
+        set_return_url(null);
+        var fn = {
+            select_holiday: function () {
+                winopen("{:url('select_holiday')}", 560, 470);
+            },
+            select_partner: function () {
+                winopen("{:url('select_partner')}", 560, 470);
+            },
+            select_category: function () {
+                winopen("{:url('select_category')}", 560, 470);
+            },
+            select_destination: function () {
+                winopen("{:url('select_destination')}", 560, 470);
+            },
+            select_companion: function () {
+                winopen("{:url('select_companion')}", 560, 470);
+            },
+            select_blog: function () {
+                winopen("{:url('select_blog')}", 560, 470);
+            },
+            save: function () {
+
+                $(".muti-select").each(function () {
+                    $muti_select = $(this);
+                    var id_list = new Array();
+
+                    $muti_select.find("span").each(function () {
+                        $span = $(this);
+                        id_list.push($span.attr('data'));
+                    });
+                    $muti_select.find('.id_list').eq(0).val(id_list);
+                    $muti_select.find('.html').eq(0).val($muti_select.find('.wrap').html());
+                });
+
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+        $(document).on('click', '.item i', function () {
+            $(this).parent().remove();
+        });
+    });
+</script>
+{/block}

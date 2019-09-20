@@ -1,0 +1,249 @@
+{extend name="layout/detail" /}
+{block name="content"}
+<h1 class="main-title">向导管理</h1>
+<div class="simple_search">
+    <div class="layui-input-inline w19">
+        <form id="form_search" method="post" action="">
+            <input type="text" id="li_name" name="li_name" class="layui-input">
+            <a class="add-on" onclick="form_search();"><i class="fa fa-search"></i></a>
+        </form>
+    </div>
+    <div class="layui-input-inline w4" style="text-align: center">
+        <a class="toggle_adv_search" id="toggle_adv_search"><i id="toggle_adv_search_icon"
+                                                               class="fa fa-chevron-down"></i></a>
+    </div>
+</div>
+<hr>
+<div id="adv_search" class="hidden">
+    <form id="form_adv_search" class="layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题：</label>
+            <div class="layui-input-block w19">
+                <input class="layui-input" name="li_name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <a class="layui-btn" lay-submit="" lay-filter="demo2" onclick="adv_search();">搜索</a>
+            </div>
+        </div>
+    </form>
+    <hr>
+</div>
+<div class="panel">
+    <span class="mid"></span>
+    <a class="layui-btn" onclick="add();">添加</a>
+</div>
+<hr>
+<table id="data_table" lay-filter="data_table"></table>
+{/block}
+
+{block name="script"}
+<script type="text/html" id="tool_bar">
+
+    {{#  if(d.is_valid == "0"){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="set_valid">启用</a>
+    {{#  } }}
+
+    {{#  if(d.is_valid == "1"){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="set_invalid">禁用</a>
+    {{#  } }}
+
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="sort_up"><i class="fa fa-arrow-up"></i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="sort_down"><i class="fa fa-arrow-down"></i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+    <!-- 这里同样支持 laytpl 语法，如： -->
+    {{#  if(d.auth > 2){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
+    {{#  } }}
+</script>
+<script>
+    layui.use(['element', 'table'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var where = {};
+
+        // 记录返回地址
+        set_return_url(null);
+
+        // 页面用到方法
+        var fn = {
+            form_search: function () {
+                where = serialize_form('#form_search');
+                tableIns.reload({
+                    where: where
+                });
+            },
+            adv_search: function () {
+                where = serialize_form('#form_adv_search');
+                tableIns.reload({
+                    where: where
+                });
+            },
+            add: function (data) {
+                window.open('{:url("add")}', '_self');
+            },
+            read: function (data) {
+                window.open('{:url("read")}?id=' + data.id, '_self');
+            },
+            edit: function (data) {
+                window.open('{:url("edit")}?id=' + data.id, '_self');
+            },
+            set_valid: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('set_valid')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            set_invalid: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('set_invalid')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            sort_up: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('sort_up')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            sort_down: function (data) {
+                var vars = "id=" + data.id;
+                $.get("{:url('sort_down')}", vars, function (res) {
+                    if (res.code) {
+                        layer.msg(res.msg, {
+                            time: 1200
+                        }, function () {
+                            location.reload(true);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            },
+            del: function (data) {
+                layer.msg('确定要删除吗?', {
+                    time: 0,
+                    btn: ['确定', '取消'],
+                    yes: function (index) {
+                        var vars = 'id=' + data.id;
+                        $.get("{:url('del')}", vars, function (res) {
+                            if (res.code) {
+                                layer.msg(res.msg, {
+                                    time: 1200
+                                }, function () {
+                                    location.reload(true);
+                                });
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        });
+                    },
+                    no: function (index) {
+                        layer.close(index);
+                    }
+                });
+            },
+        };
+        win_exp(fn);
+
+        var page_config = {
+            limits: [10, 20, 50, 100, 1000],
+            layout: ['prev', 'page', 'next', 'skip', 'limit', 'count'],
+        };
+
+        var response = {
+            statusCode: 1 //规定成功的状态码，默认：0
+        };
+        var cols = [[
+            {
+                field: 'partner_name',
+                title: '旅行社',
+            },
+            {
+                field: 'name',
+                title: '名称(中文)',
+            },
+            {
+                field: 'name_en',
+                title: '名称(英文)',
+            },
+            {
+                field: 'sort',
+                title: '排序',
+                width: 90,
+            },
+            {
+                field: 'is_valid_name',
+                title: '状态',
+                width: 90,
+            },
+            {
+                field: 'create_time',
+                title: '发布日期',
+                width: 160
+            },
+            {
+                toolbar: '#tool_bar',
+                title: '操作',
+                width: 230,
+                fixed: 'right',
+            }]];
+
+        var tableIns = table.render({
+            loading: false,
+            elem: '#data_table',
+            url: '{:url()}',
+            page: page_config,
+            response: response,
+            cols: cols,
+            where: where,
+            done: function (res, curr, count) {
+                $(this.elem.selector).next().find('table tbody td[data-field=background_color]').each(function () {
+                    index = $(this).closest('tr').attr('data-index');
+                    background_color = $(this).text();
+                    $("table tbody tr[data-index=" + index + "]").addClass(background_color);
+                });
+            }
+        });
+
+        table.on('tool(data_table)', function (obj) {
+            var data = obj.data;
+            //获得当前行数据
+            var layEvent = obj.event;
+            //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr;
+            //获得当前行 tr 的DOM对象
+
+            fn[layEvent](data);
+        });
+    });
+</script>
+{/block}

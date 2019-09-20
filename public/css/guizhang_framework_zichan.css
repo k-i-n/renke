@@ -1,0 +1,23 @@
+.page_list{
+    
+    margin: 30px 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.page_list .page_list_item{
+    margin-right: 11px;
+    padding: 10px 16px;
+    background-color: #eeeeee;
+    border-radius: 4px;
+	font-size: 17px;
+	color: #333333;
+}
+.page_list .page_list_item:hover{
+    background-color: #087dce;
+    color: #ffffff;
+}
+.clicked{
+    background-color: #087dce !important;
+    color: #ffffff !important;
+}

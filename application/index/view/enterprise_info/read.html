@@ -1,0 +1,93 @@
+{extend name="layout/popup" /}
+
+{block name="content"}
+<input type="hidden" name="ajax" id="ajax" value="1">
+<div class="popup-header">
+    <h1>查看用户</h1>
+</div>
+<div class="popup-body">
+    <form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+        <input type="hidden" name="opmode" value="edit">
+        <input type="hidden" name="id" id="id" value="{$vo.id}">
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">姓名：</label>
+                    <div class="layui-input-block w19">
+                        <div class="layui-form-mid">
+                            {$vo.name}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">手机号：</label>
+                    <div class="layui-input-block w19">
+                        <div class="layui-form-mid">
+                            {$vo.mobile}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">部门：</label>
+                    <div class="layui-input-block w19">
+                        <div class="layui-form-mid">
+                            {$vo.dept_name}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">岗位：</label>
+                    <div class="layui-input-block w19">
+                        <div class="layui-form-mid">
+                            {$vo.position_id}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="popup-footer">
+    <a class="layui-btn layui-btn-primary" onclick="popup_close();">取消</a>
+    <a class="layui-btn" onclick="edit();">编辑</a>
+</div>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        var fn = {
+            select_dept: function () {
+                winopen("{:url('select_dept')}", 560, 470);
+            },
+            edit: function () {
+                parent.popup_open("{:url('edit')}?id={$vo.id}", 720, 523);
+                popup_close();
+            },
+            save: function () {
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            popup_close();
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+        form.render();
+
+    });
+</script>
+{/block}

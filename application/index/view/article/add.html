@@ -1,0 +1,111 @@
+{extend name="layout/detail" /}
+
+{block name="content"}
+<div class="td-content-wrap p20">
+    <input type="hidden" name="ajax" id="ajax" value="1">
+    <h1 class="main-title">添加文章</h1>
+    <hr>
+    <form id="form_data" class="layui-form" method="post" action="{:url('save')}">
+        <input type="hidden" name="opmode" value="add">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">标题：</label>
+            <div class="layui-input-block w40">
+                <input type="text" name="name" placeholder="标题" class="layui-input" check="required" info="标题">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">作者：</label>
+            <div class="layui-input-block w19">
+                <input type="text" name="author" placeholder="作者" class="layui-input" check="required" info="作者">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">URL：</label>
+            <div class="layui-input-block w38">
+                <input type="text" name="url" placeholder="请输入URL" class="layui-input" check="required" info="URL">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">发布时间：</label>
+            <div class="layui-input-block w19">
+                <input type="text" name="post_time" placeholder="发布时间" class="layui-input input-date-time" check="required" info="发布时间" readonly="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">分类：</label>
+            <div class="layui-input-block w19">
+                <input type="hidden" id="category_id" name="category_id">
+                <input type="text" id="category_name" name="category_name" placeholder="所属分类" class="layui-input"
+                       check="required" info="所属分类" readonly="readonly">
+                <a class="add-on" onclick="select_category()"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">关键词：</label>
+            <div class="layui-input-block w6">
+                <input type="text" name="keyword" class="layui-input w40">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明：</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="desc"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容：</label>
+            <div class="layui-input-block">
+                <div style="position: relative;" data="content" class="ueditor">
+                    <textarea class="" name="content" id="content" style="height:200px;"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片：</label>
+            <div class="layui-input-block">
+                <div class="image-upload">
+                    <h1>+<i class="fa fa-file-image-o"></i></h1>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <a class="layui-btn" onclick="save();">保存</a>
+                <a class="layui-btn layui-btn-primary" onclick="go_return_url();">取消</a>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['form', 'modules/ueditor','upload'], function () {
+        let fn = {
+            select_category: function () {
+                popup_open("{:url('select_category')}", 560, 470);
+            },
+            save: function () {
+                send_form("form_data", "{:url('save')}", "{:url('index')}", function (ret) {
+                    if (ret.code) {
+                        layer.msg(ret.msg, {
+                            time: 1200
+                        }, function () {
+                            location.href = "{:url('index')}";
+                        });
+                    } else {
+                        layer.msg(ret.msg);
+                        return false;
+                    }
+                });
+            }
+        };
+        win_exp(fn);
+
+    });
+</script>
+{/block}
